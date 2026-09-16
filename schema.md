@@ -41,12 +41,67 @@ The `Owner` table seperates information about a person from information about th
 Since an owner can have multiple vehicles, storing owner information inside a vehicle table would create duplicates.
 Instead, the vehicle table stores an `owner_id` foreign key that refrences the appropriate owner.
 
-## Make
-- Schema
+---
 
-## Model
-- Schema
-- Design reasoning
+# Make
+
+The `Make` table stores vehicle manufacturers.
+
+| Field | Type | Key | Description |
+|---|---|---|---|
+| make_id | INT | PK | Unique identifier for a manufacturer |
+| make_name | VARCHAR(50) | | Name of the manufacturer |
+
+## Example
+
+| make_id | make_name |
+|---|---|
+| 1 | Honda |
+| 2 | Mazda |
+| 3 | Toyota |
+
+## Design Reasoning
+
+Vehicle manufactacturer names are stored sepreatly from vehicle models to avoid repeats of manufacturer names.
+For example, Honda Mmanufactures many different models. `Honda` can be stored once in the `Make` table referenced by those models.
+
+---  
+
+# Model
+
+The `Model` table stores vehicle models.
+
+| Field | Type | Key | Description |
+|---|---|---|---|
+| model_id | INT | PK | Unique identifier for a vehicle model |
+| make_id | INT | FK | References `Make(make_id)` |
+| model_name | VARCHAR(50) | | Name of the vehicle model |
+
+## Example
+
+| model_id | make_id | model_name |
+|---|---|---|
+| 1 | 1 | Civic |
+| 2 | 1 | Accord |
+| 3 | 2 | Mazda3 |
+| 4 | 2 | CX-5 |
+
+In this example, models 1 and 2 belong to Honda, while models 3 and 4 belong to Mazda.
+
+## Design Reasoning
+
+The `Make` and `Model` tables are separated because one make can have many models.
+
+For example:
+
+- Honda can manufacture Civic, Accord, and CR-V;
+- Mazda can manufacture Mazda3, CX-5, and MX-5.
+
+The `make_id` foreign key in `Model` identifies which manufacturer produces that model.
+
+This creates a one-to-many relationship:
+
+`Make 1 -> many Model`
 
 ## Vehicle
 - Schema
