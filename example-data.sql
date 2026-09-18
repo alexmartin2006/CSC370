@@ -116,12 +116,13 @@ VALUES
 INSERT INTO ServicePart (
     service_id,
     part_id,
+    service_type_id,
     quantity,
     unit_cost
 )
 VALUES
-    (7, 1, 1, 60.43),
-    (7, 2, 1, 40.44);
+    (7, 1, 1, 1, 60.43),
+    (7, 2, 2, 1, 40.44);
 
 
 -- Test the data

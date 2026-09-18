@@ -75,11 +75,13 @@ CREATE TABLE ServiceRecordType (
 CREATE TABLE ServicePart (
     service_id INT,
     part_id INT,
+    service_type_id INT,
     quantity INT,
     unit_cost FLOAT,
 
-    PRIMARY KEY (service_id, part_id),
+    PRIMARY KEY (service_id, part_id, service_type_id),
 
     FOREIGN KEY (service_id) REFERENCES ServiceRecord(service_id),
-    FOREIGN KEY (part_id) REFERENCES Part(part_id)
+    FOREIGN KEY (part_id) REFERENCES Part(part_id),
+    FOREIGN KEY (service_type_id) REFERENCES ServiceType(service_type_id)
 );
