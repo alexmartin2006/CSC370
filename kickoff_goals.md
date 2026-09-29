@@ -1,4 +1,4 @@
-# Car Maintenance Tracker - Project Goals
+# Car Maintenance Tracker - Kick-Off Goals
 
 ## Project Overview
 
