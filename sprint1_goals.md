@@ -25,7 +25,7 @@ This will replace the current need to associate parts with both a service record
 ### Success Criteria
 
 - Design the new relationships and keys.
-- Update the relational ERD.
+- Update visual diagrams.
 - Update `database.sql`.
 - Demonstrate a work order with multiple service jobs.
 - Demonstrate different parts belonging to different jobs.
@@ -77,16 +77,4 @@ Review the expanded schema using relational design concepts covered in CSC 370.
 - Test referential integrity.
 - Update `schema.md` to match the final design.
 
----
 
-## Sprint 1 Completion Target
-
-By the end of Sprint 1, the database should support:
-
-- vehicle work orders;
-- multiple jobs within a work order;
-- parts associated with individual jobs;
-- technician tracking;
-- maintenance schedules.
-
-The updated schema should also demonstrate stronger relational design and referential integrity.
