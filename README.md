@@ -10,7 +10,7 @@ The project models vehicle owners, vehicles, maintenance records, service types,
 - **`sprint1_goals.md`** – Goals and planned improvements for Sprint 1.
 - **`conceptual_erd.png`** – Conceptual Entity-Relationship Diagram.
 - **`erd.png`** – Relational Entity-Relationship Diagram.
-- **`erd-example.png`** – Example relational diagram populated with sample data.
+- **`erd-example.png`** – Example relational diagram populated with some sample data (note that it does not show all the data the is included in example-data.sql).
 - **`schema.md`** – Short description of each relation and its attributes.
 - **`database.sql`** – Creates the database, tables, keys, and constraints.
 - **`example-data.sql`** – Inserts sample data used to test the database.
