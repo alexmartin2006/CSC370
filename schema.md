@@ -124,10 +124,3 @@ Stores parts used during a service and associates them with a specific service t
 |  | quantity | INT | Stores the quantity of the part used. |
 |  | unit_cost | FLOAT | Stores the cost of one unit of the part. |
 
-### Current Limitation
-
-`service_id` and `service_type_id` are currently validated independently.
-
-This means the database does not yet enforce that the specific `(service_id, service_type_id)` combination exists in `ServiceRecordType`.
-
-Improving this relationship is planned for a future sprint.
