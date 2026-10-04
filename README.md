@@ -6,7 +6,6 @@ The project models vehicle owners, vehicles, maintenance records, service types,
 
 ## Files
 
-- **`requirements.md`** – Project requirements and scope.
 - **`kickoff_goals.md`** – Initial project goals and success criteria.
 - **`sprint1_goals.md`** – Goals and planned improvements for Sprint 1.
 - **`conceptual_erd.png`** – Conceptual Entity-Relationship Diagram.
