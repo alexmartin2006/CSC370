@@ -83,6 +83,7 @@ VALUES
     (2, 'Oil 5W40', 'Motul', '4FHDJ87T');
 
 
+
 -- ServiceRecord
 INSERT INTO ServiceRecord (
     service_id,
@@ -92,14 +93,23 @@ INSERT INTO ServiceRecord (
     labour_cost,
     notes
 )
-VALUES (
-    7,
-    2,
-    '2026-09-15',
-    102503,
-    430.85,
-    'Oil change and front pads'
-);
+VALUES
+    (
+        7,
+        2,
+        '2026-09-15',
+        102503,
+        430.85,
+        'Oil change and front pads'
+    ),
+    (
+        8,
+        2,
+        '2026-10-01',
+        103800,
+        85.00,
+        'Oil change'
+    );
 
 
 -- ServiceRecordType
