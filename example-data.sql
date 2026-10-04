@@ -119,7 +119,8 @@ INSERT INTO ServiceRecordType (
 )
 VALUES
     (7, 1),
-    (7, 2);
+    (7, 2),
+    (8, 2);
 
 
 -- ServicePart
