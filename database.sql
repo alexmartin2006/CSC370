@@ -106,9 +106,7 @@ CREATE TABLE JobTechnician (
 
     PRIMARY KEY (service_job_id, technician_id),
 
-    FOREIGN KEY (service_job_id)
-        REFERENCES ServiceJob(service_job_id),
-
+    FOREIGN KEY (service_job_id) REFERENCES ServiceJob(service_job_id),
     FOREIGN KEY (technician_id) REFERENCES Technician(technician_id)
 );
 
