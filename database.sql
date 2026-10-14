@@ -133,6 +133,3 @@ CREATE TABLE ScheduleService (
     FOREIGN KEY (maintenance_schedule_id) REFERENCES MaintenanceSchedule(maintenance_schedule_id),
     FOREIGN KEY (service_type_id) REFERENCES ServiceType(service_type_id)
 );
-
-
-SHOW TABLES;
