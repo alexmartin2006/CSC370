@@ -1,126 +1,94 @@
-# Car Maintenance Tracker - Schema
+# Car Maintenance Tracker - Schema Examples
 
-## Overview
-
-The database stores vehicle ownership, vehicle information, maintenance history, service types, and parts used during maintenance.
-
-The relational ERD shows the database structure. This file provides a short description of each relation and its attributes.
-
----
+The following tables provide example values for each relation. The examples use consistent primary and foreign keys to demonstrate relationships between tables. All records are fictional.
 
 ## Owner
 
-Stores information about vehicle owners.
-
-| Key | Attribute | Type | Description |
-|---|---|---|---|
-| PK | owner_id | INT | Unique identifier for an owner. |
-|  | first_name | VARCHAR(50) | Stores the owner's first name. |
-|  | last_name | VARCHAR(50) | Stores the owner's last name. |
-|  | email | VARCHAR(255) | Stores the owner's email address. |
-|  | phone | VARCHAR(32) | Stores the owner's phone number. |
-
----
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK | owner_id | INT | 1 | 2 |
+| | first_name | VARCHAR(50) | Alex | Jordan |
+| | last_name | VARCHAR(50) | Martin | Smith |
+| | email | VARCHAR(255) | alex@example.com | jordan@example.com |
+| | phone | VARCHAR(32) | 250-555-0101 | 250-555-0102 |
 
 ## Make
 
-Stores vehicle manufacturers.
-
-| Key | Attribute | Type | Description |
-|---|---|---|---|
-| PK | make_id | INT | Unique identifier for a vehicle manufacturer. |
-|  | make_name | VARCHAR(50) | Stores the manufacturer name, such as Subaru or Honda. |
-
----
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK | make_id | INT | 1 | 2 |
+| | make_name | VARCHAR(50) | Subaru | Honda |
 
 ## Model
 
-Stores specific vehicle models and connects them to a manufacturer.
-
-| Key | Attribute | Type | Description |
-|---|---|---|---|
-| PK | model_id | INT | Unique identifier for a vehicle model. |
-| FK | make_id | INT | References the manufacturer that produces the model. |
-|  | model_name | VARCHAR(50) | Stores the name of a specific vehicle model. |
-
----
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK | model_id | INT | 1 | 2 |
+| FK | make_id | INT | 1 | 2 |
+| | model_name | VARCHAR(50) | WRX | Civic |
 
 ## Vehicle
 
-Stores information about an individual vehicle.
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK | vehicle_id | INT | 1 | 2 |
+| FK | owner_id | INT | 1 | 2 |
+| FK | model_id | INT | 1 | 2 |
+| | year | INT | 2013 | 2018 |
+| | vin | CHAR(17) | JF1GR7E60EG123456 | 2HGFC2F59KH123456 |
+| | licence_plate | VARCHAR(20) | AB123C | CD456E |
+| | current_odometer | INT | 145000 | 82000 |
 
-| Key | Attribute | Type | Description |
-|---|---|---|---|
-| PK | vehicle_id | INT | Unique identifier for a vehicle. |
-| FK | owner_id | INT | References the owner of the vehicle. |
-| FK | model_id | INT | References the vehicle's model. |
-|  | year | INT | Stores the model year of the vehicle. |
-|  | vin | CHAR(17) | Stores the vehicle identification number. |
-|  | licence_plate | VARCHAR(20) | Stores the vehicle's licence plate. |
-|  | current_odometer | INT | Stores the vehicle's current odometer reading. |
+## WorkOrder
 
----
-
-## ServiceRecord
-
-Stores a maintenance or repair event for a vehicle.
-
-| Key | Attribute | Type | Description |
-|---|---|---|---|
-| PK | service_id | INT | Unique identifier for a service record. |
-| FK | vehicle_id | INT | References the vehicle being serviced. |
-|  | service_date | DATE | Stores the date the service was performed. |
-|  | odometer | INT | Stores the vehicle's odometer reading at the time of service. |
-|  | labour_cost | FLOAT | Stores the labour cost for the service. |
-|  | notes | VARCHAR(500) | Stores additional information about the service. |
-
----
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK | work_order_id | INT | 1 | 2 |
+| FK | vehicle_id | INT | 1 | 2 |
+| | service_date | DATE | 2026-10-10 | 2026-10-12 |
+| | odometer | INT | 144500 | 81500 |
+| | labour_cost | DECIMAL(10,2) | 180.00 | 95.00 |
+| | notes | VARCHAR(500) | Oil change and brake inspection | Routine maintenance |
 
 ## ServiceType
 
-Stores the different types of maintenance or repair work that can be performed.
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK | service_type_id | INT | 1 | 2 |
+| | service_name | VARCHAR(100) | Oil Change | Brake Inspection |
+| | description | VARCHAR(255) | Replace engine oil and filter | Inspect brake components |
 
-| Key | Attribute | Type | Description |
-|---|---|---|---|
-| PK | service_type_id | INT | Unique identifier for a service type. |
-|  | service_name | VARCHAR(100) | Stores the name of the service, such as Oil Change. |
-|  | description | VARCHAR(255) | Stores a short description of the service type. |
+## ServiceJob
 
----
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK | service_job_id | INT | 1 | 2 |
+| FK | work_order_id | INT | 1 | 1 |
+| FK | service_type_id | INT | 1 | 2 |
 
-## ServiceRecordType
-
-Mapping relation between `ServiceRecord` and `ServiceType`.
-
-| Key | Attribute | Type | Description |
-|---|---|---|---|
-| PK, FK | service_id | INT | References the service record where the work was performed. |
-| PK, FK | service_type_id | INT | References a type of service performed during the service record. |
-
----
+Both service jobs belong to WorkOrder 1, demonstrating that one work order can contain multiple services.
 
 ## Part
 
-Stores information about parts used during maintenance.
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK | part_id | INT | 1 | 2 |
+| | part_name | VARCHAR(100) | Oil Filter | Brake Cleaner |
+| | manufacturer | VARCHAR(255) | Subaru | CRC |
+| | part_number | VARCHAR(100) | 15208AA170 | 05089 |
 
-| Key | Attribute | Type | Description |
-|---|---|---|---|
-| PK | part_id | INT | Unique identifier for a part. |
-|  | part_name | VARCHAR(100) | Stores the name of the part. |
-|  | manufacturer | VARCHAR(255) | Stores the manufacturer of the part. |
-|  | part_number | VARCHAR(100) | Stores the manufacturer's part number. |
+## JobPart
 
----
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK, FK | service_job_id | INT | 1 | 2 |
+| PK, FK | part_id | INT | 1 | 2 |
+| | quantity | INT | 1 | 1 |
+| | unit_cost | DECIMAL(10,2) | 18.50 | 12.99 |
 
-## ServicePart
+JobPart associates the oil filter with ServiceJob 1 and brake cleaner with ServiceJob 2.
 
-Stores parts used during a service and associates them with a specific service type.
+## Technician
 
-| Key | Attribute | Type | Description |
-|---|---|---|---|
-| PK, FK | service_id | INT | References the service record where the part was used. |
-| PK, FK | part_id | INT | References the part that was used. |
-| PK, FK | service_type_id | INT | References the type of service the part was used for. |
-|  | quantity | INT | Stores the quantity of the part used. |
-|  | unit_cost | FLOAT | Stores the cost of one unit of the part. |
-
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|
