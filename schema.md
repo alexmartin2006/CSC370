@@ -91,4 +91,37 @@ JobPart associates the oil filter with ServiceJob 1 and brake cleaner with Servi
 ## Technician
 
 | Key | Attribute | Type | Example 1 | Example 2 |
-|---|---|
+|---|---|---|---|---|
+| PK | technician_id | INT | 1 | 2 |
+| | first_name | VARCHAR(50) | Sam | Riley |
+| | last_name | VARCHAR(50) | Johnson | Lee |
+
+## JobTechnician
+
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK, FK | service_job_id | INT | 1 | 1 |
+| PK, FK | technician_id | INT | 1 | 2 |
+
+Both technicians are assigned to ServiceJob 1, demonstrating that multiple technicians can work on the same job.
+
+## MaintenanceSchedule
+
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK | maintenance_schedule_id | INT | 1 | 2 |
+| FK | model_id | INT | 1 | 2 |
+| | schedule_name | VARCHAR(100) | WRX Standard Maintenance | Civic Standard Maintenance |
+
+## ScheduleService
+
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK, FK | maintenance_schedule_id | INT | 1 | 1 |
+| PK, FK | service_type_id | INT | 1 | 2 |
+| | kilometre_interval | INT | 10000 | 20000 |
+| | month_interval | INT | 6 | 12 |
+
+Both recommended services belong to MaintenanceSchedule 1, demonstrating that one maintenance schedule can contain multiple service recommendations.
+
+*Note: Maintenance intervals and part details are illustrative values for database testing, not verified manufacturer specifications.*
