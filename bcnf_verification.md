@@ -1,4 +1,4 @@
-# Sprint 1 — Functional Dependencies and BCNF
+Functional Dependencies and BCNF
 
 An FD `X → Y` means X determines Y. A table is in **BCNF** when the left side of every nontrivial FD is a superkey.
 
