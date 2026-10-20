@@ -153,5 +153,3 @@ Associates service types with schedules and records the recommended kilometre an
 | | month_interval | INT | 6 | 12 |
 
 Both recommended services belong to MaintenanceSchedule 1, demonstrating that one maintenance schedule can contain multiple service recommendations.
-
-*Note: Maintenance intervals and part details are illustrative values for database testing, not verified manufacturer specifications.*
