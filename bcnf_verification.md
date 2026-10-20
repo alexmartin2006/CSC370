@@ -1,6 +1,10 @@
-Functional Dependencies and BCNF
+# Functional Dependencies and BCNF
 
-An FD `X → Y` means X determines Y. A table is in **BCNF** when the left side of every nontrivial FD is a superkey.
+An FD `X → Y` means **X determines Y**.
+
+A table is in **Boyce-Codd Normal Form (BCNF)** if, for every nontrivial functional dependency `X → Y`, **X is a superkey**.
+
+All 13 tables in this database satisfy BCNF under the functional dependencies and key constraints listed below because every nontrivial FD has a superkey on its left side. This helps reduce redundancy and update, insertion, and deletion anomalies.
 
 | Table | Main functional dependency | Candidate key(s) |
 |---|---|---|
@@ -17,3 +21,13 @@ An FD `X → Y` means X determines Y. A table is in **BCNF** when the left side 
 | JobTechnician | No nontrivial FDs beyond those implied by the composite key | `(service_job_id, technician_id)` |
 | MaintenanceSchedule | `maintenance_schedule_id → model_id, schedule_name` | `maintenance_schedule_id` |
 | ScheduleService | `(maintenance_schedule_id, service_type_id) → kilometre_interval, month_interval` | `(maintenance_schedule_id, service_type_id)` |
+
+## VIN Note
+
+In the `Vehicle` table, `vin` is also a candidate key because each VIN uniquely identifies a vehicle. Therefore, the following is another valid FD:
+
+`vin → vehicle_id, owner_id, model_id, year, licence_plate, current_odometer`
+
+Although `vehicle_id` is the chosen primary key, `vin` is an alternate candidate key. Both are superkeys, so this does not violate BCNF.
+
+**Important:** This assumes `vin` is enforced as `UNIQUE NOT NULL` in the database.
