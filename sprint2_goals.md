@@ -79,5 +79,3 @@ Sprint 2 will address these limitations through two new database features and tw
 Update `conceptual_erd.png`, `erd.png`, `database.sql`, `example-data.sql`, `queries.sql`, `schema.md`, and `README.md` as needed. The Sprint 2 demonstration will show the new table relationships, working queries, expected-versus-actual results, and examples of constraints rejecting invalid data.
 
 The goals develop course-level competencies in relational design, integrity constraints, and Advanced SQL. Specific course terminology will be checked against the Advanced SQL materials in Brightspace.
-
-**Scope:** No user interface, automatic inventory deduction, or automatic conversion of appointments into work orders is planned for this sprint. If time is limited, priority will go to implementing and testing the new tables and the cost-analysis queries, with any unfinished goals clearly reported.
