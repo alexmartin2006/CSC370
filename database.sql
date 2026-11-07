@@ -1,4 +1,5 @@
--- CSC 370 Car Maintenance Tracker - Sprint 1
+
+-- CSC 370 Car Maintenance Tracker - Sprint 2
 -- WARNING: Running this script deletes and recreates car_maintenance.
 DROP DATABASE IF EXISTS car_maintenance;
 CREATE DATABASE car_maintenance;
@@ -113,4 +114,23 @@ CREATE TABLE ScheduleService (
     FOREIGN KEY (service_type_id) REFERENCES ServiceType(service_type_id),
     CHECK (kilometre_interval > 0),
     CHECK (month_interval > 0)
+);
+
+CREATE TABLE ServiceAppointment (
+    appointment_id INT NOT NULL PRIMARY KEY,
+    vehicle_id INT NOT NULL,
+    appointment_datetime DATETIME NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    notes VARCHAR(500),
+    FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_id),
+    CHECK (status IN ('Scheduled', 'Completed', 'Cancelled'))
+);
+
+CREATE TABLE Inventory (
+    part_id INT NOT NULL PRIMARY KEY,
+    quantity_in_stock INT NOT NULL,
+    reorder_level INT NOT NULL,
+    FOREIGN KEY (part_id) REFERENCES Part(part_id),
+    CHECK (quantity_in_stock >= 0),
+    CHECK (reorder_level >= 0)
 );

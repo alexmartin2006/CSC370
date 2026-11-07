@@ -1,3 +1,4 @@
+
 USE car_maintenance;
 
 -- Owner
@@ -130,7 +131,7 @@ VALUES
 
 
 -- JobPart
--- Parts are now associated directly with the job in which they were used.
+-- Parts are associated directly with the job in which they were used.
 INSERT INTO JobPart (
     service_job_id,
     part_id,
@@ -189,7 +190,86 @@ VALUES
     (3, 2, 10000, 6);
 
 
--- Test the data
+-- Sprint 2: additional service type and parts for realistic test coverage.
+INSERT INTO ServiceType (service_type_id, service_name, description)
+VALUES (3, 'Tire Rotation', 'Rotate tyres to balance tread wear');
+
+INSERT INTO Part (part_id, part_name, manufacturer, part_number)
+VALUES
+    (3, 'Oil Filter', 'Subaru', '15208AA170'),
+    (4, 'Brake Rotor', 'Brembo', '09A12311'),
+    (5, 'Air Filter', 'Denso', '143-3606');
+
+
+-- Sprint 2 Goal 1: at least five appointments over two vehicles.
+INSERT INTO ServiceAppointment (
+    appointment_id, vehicle_id, appointment_datetime, status, notes
+)
+VALUES
+    (1, 1, '2026-11-10 09:00:00', 'Scheduled', 'Winter tire change'),
+    (2, 1, '2026-10-01 08:30:00', 'Completed', 'Oil-change appointment'),
+    (3, 1, '2026-11-12 13:00:00', 'Cancelled', 'Customer cancelled inspection'),
+    (4, 2, '2026-11-16 10:00:00', 'Scheduled', 'Routine service'),
+    (5, 2, '2026-10-15 14:00:00', 'Completed', 'Oil-change appointment'),
+    (6, 2, '2026-11-20 11:00:00', 'Scheduled', 'Brake inspection');
+
+
+-- Sprint 2 Goal 2: five parts, with parts 2, 3 and 5 at/below reorder levels.
+INSERT INTO Inventory (part_id, quantity_in_stock, reorder_level)
+VALUES
+    (1, 12, 5),
+    (2,  3, 3),
+    (3,  0, 2),
+    (4,  7, 5),
+    (5,  2, 2);
+
+
+-- Sprint 2 Goal 4: additional service histories for due-status testing.
+-- Vehicle 2: oil change is due by km (31500 - 10000 >= 10000).
+-- Vehicle 3: brake service is due by time (last done 2025-06-01).
+-- Vehicle 3 has NO oil-change history.
+INSERT INTO WorkOrder (
+    work_order_id, vehicle_id, service_date, odometer, notes
+)
+VALUES
+    (9, 2, '2026-10-15', 10000, 'Older mileage oil change for due-by-km example'),
+    (10, 3, '2025-06-01', 67000, 'Brake inspection for due-by-time example');
+
+INSERT INTO ServiceJob (
+    service_job_id, work_order_id, service_type_id, labour_cost
+)
+VALUES
+    (4, 9, 2, 95.00),
+    (5, 10, 1, 125.00);
+
+INSERT INTO JobPart (service_job_id, part_id, quantity, unit_cost)
+VALUES
+    (4, 2, 1, 42.00),
+    (4, 3, 1, 19.00),
+    (5, 1, 1, 65.00);
+
+INSERT INTO JobTechnician (service_job_id, technician_id)
+VALUES
+    (4, 2),
+    (5, 2);
+
+
+-- Vehicle 3 gets one schedule to support due-by-time and no-history cases.
+INSERT INTO MaintenanceSchedule (
+    maintenance_schedule_id, model_id, schedule_name
+)
+VALUES
+    (4, 3, 'CR-V Normal Maintenance');
+
+INSERT INTO ScheduleService (
+    maintenance_schedule_id, service_type_id, kilometre_interval, month_interval
+)
+VALUES
+    (4, 1, 20000, 12),
+    (4, 2, 10000, 6);
+
+
+-- Sprint 2: inspect the populated tables.
 SELECT * FROM Owner;
 SELECT * FROM Make;
 SELECT * FROM Model;
@@ -203,3 +283,5 @@ SELECT * FROM JobPart;
 SELECT * FROM JobTechnician;
 SELECT * FROM MaintenanceSchedule;
 SELECT * FROM ScheduleService;
+SELECT * FROM ServiceAppointment ORDER BY appointment_datetime;
+SELECT * FROM Inventory ORDER BY part_id;
