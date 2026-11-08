@@ -31,6 +31,10 @@ Tracks vehicle owners, vehicles, work orders, service jobs, parts, technicians, 
 
 Replaced service records with **WorkOrder**, **ServiceJob**, and **JobPart**; added technician assignments and maintenance schedules; and improved data integrity using keys and constraints. Functional dependencies and BCNF are reviewed separately.
 
+## Known Limitations
+
+- **Odometer validation:** The database ensures odometer readings are nonnegative but does not enforce that a WorkOrder's odometer reading is less than or equal to the Vehicle's current_odometer. This would require additional validation across tables, such as a trigger.
+
 ## References & Tools
 
 - **CSC 370 course materials** – Database design and SQL concepts.
