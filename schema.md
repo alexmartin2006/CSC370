@@ -4,7 +4,8 @@
 
 The database tracks vehicle ownership, service visits, individual service jobs, parts used, technician assignments, and maintenance recommendations by vehicle model. The relational ERD shows the relationships between tables.
 
-The tables below describe each relation, its keys, SQL data types, and two **fictional example records**. Example IDs are consistent across the tables, but the examples are illustrative and do not necessarily match `example-data.sql`. `PK, FK` indicates a column that is part of a composite primary key and also references another table.
+The tables below describe each relation, its keys, SQL data types, and two **fictional example records**. Example IDs are consistent across the tables, but the examples are illustrative and do not necessarily match `example-data.sql`.
+
 
 ## Owner
 
