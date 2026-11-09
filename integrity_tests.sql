@@ -1,6 +1,6 @@
 -- SPRINT 2 INTEGRITY TESTS
 -- Execute each test separately. Tests 1-5 should fail.
-
+USE car_maintenance;
 -- 1. FOREIGN KEY: Appointment references a nonexistent vehicle
 INSERT INTO ServiceAppointment
     (appointment_id, vehicle_id, appointment_datetime, status)
