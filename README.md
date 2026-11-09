@@ -4,32 +4,43 @@ A relational database project for **CSC 370: Database Systems** at the Universit
 
 Tracks vehicle owners, vehicles, work orders, service jobs, parts, technicians, and recommended maintenance schedules.
 
+
 ## Files
 
 - **`kickoff_goals.md`** – Initial project goals.
-- **`sprint1_goals.md`** – Sprint 1 goals.
-- **`sprint2_goals.md`** – Planned Sprint 2 development.
+- **`sprint2_goals.md`** – Sprint 2 goals and implementation notes.
+- **`sprint3_goals.md`** – Sprint 3 goals.
 - **`conceptual_erd.png`** – Conceptual ER diagram.
 - **`erd.png`** – Relational ER diagram.
 - **`schema.md`** – Tables, keys, attributes, and examples.
 - **`bcnf_verification.md`** – Functional dependencies, candidate keys, and BCNF review.
 - **`database.sql`** – Creates the tables and constraints.
 - **`example-data.sql`** – Inserts sample records.
-- **`queries.sql`** – Retrieves maintenance information.
-- **`integrity_tests.sql`** – Tests key, foreign-key, and data constraints.
+- **`queries.sql`** – Service appointment and inventory queries.
+- **`advanced_queries.sql`** – Maintenance cost analysis and maintenance evaluation.
+- **`integrity_tests.sql`** – Sprint 2 constraint and functionality tests.
+
 
 ## Running the Project
 
 1. Run `database.sql` in MySQL Workbench.
 2. Run `example-data.sql` to populate the tables.
-3. Run `queries.sql` to retrieve data.
-4. Run each numbered test in `integrity_tests.sql` **separately**. The six test inserts are expected to fail; Test 6 also has setup and cleanup statements.
+3. Run `queries.sql` to test service appointment and inventory queries.
+4. Run `advanced_queries.sql` to evaluate maintenance costs and service intervals.
+5. Run the numbered tests in `integrity_tests.sql` individually:
+   - Tests 1–5 should fail because they violate database constraints.
+   - Test 6 updates inventory, checks the low-stock results, and restores the original quantity.
+   - Test 7 adds a technician, verifies the service job cost, and rolls back the change.
 
 **Note:** `database.sql` deletes and recreates the database, removing existing data.
 
-## Sprint 1 Updates
+## Sprint 2 Updates
 
-Replaced service records with **WorkOrder**, **ServiceJob**, and **JobPart**; added technician assignments and maintenance schedules; and improved data integrity using keys and constraints. Functional dependencies and BCNF are reviewed separately.
+- Added ServiceAppointment to manage scheduled, completed, and cancelled appointments.
+- Added Inventory to track stock quantities and reorder levels.
+- Created queries to retrieve appointment information and identify low-stock parts.
+- Added Advanced SQL queries to calculate maintenance costs and evaluate recommended service intervals.
+- Expanded integrity testing to verify new constraints, inventory updates, and maintenance cost calculations.
 
 ## Known Limitations
 

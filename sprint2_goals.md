@@ -79,3 +79,13 @@ Sprint 2 will address these limitations through two new database features and tw
 Update `conceptual_erd.png`, `erd.png`, `database.sql`, `example-data.sql`, `queries.sql`, `schema.md`, and `README.md` as needed. The Sprint 2 demonstration will show the new table relationships, working queries, expected-versus-actual results, and examples of constraints rejecting invalid data.
 
 The goals develop course-level competencies in relational design, integrity constraints, and Advanced SQL. Specific course terminology will be checked against the Advanced SQL materials in Brightspace.
+
+## Sprint 2 Implementation Notes
+
+**Goal 4 — Upcoming Maintenance Evaluation**
+
+The original goal was to automatically determine whether maintenance was due based on kilometres driven or time elapsed since the last service. During implementation, I realized that fully achieving this would require SQL techniques that had not yet been covered in CSC 370.
+
+I therefore adjusted the goal to better align with the course's Advanced SQL learning objectives. Instead of automatically determining maintenance status, the queries retrieve the most recent service record, calculate kilometres driven since that service, and display the recommended maintenance intervals. These results can then be used to manually determine whether maintenance is due.
+
+All four original test cases were retained: not due, due by kilometres, due by time, and no recorded service history. This approach still demonstrates joins, subqueries, filtering, ordering, and calculated attributes while remaining within the scope of the course.

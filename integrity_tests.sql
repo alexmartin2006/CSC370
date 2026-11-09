@@ -1,39 +1,68 @@
--- CSC 370 - Sprint 1 Integrity Tests
--- Run database.sql and example-data.sql first.
--- Execute each numbered test separately in MySQL Workbench.
--- Each test INSERT is EXPECTED TO FAIL. An error means the constraint worked.
-USE car_maintenance;
+-- SPRINT 2 INTEGRITY TESTS
+-- Execute each test separately. Tests 1-5 should fail.
 
--- 1. FOREIGN KEY: owner_id 999 does not exist. EXPECTED: FAIL.
-INSERT INTO Vehicle (vehicle_id, owner_id, model_id, year, vin, current_odometer)
-VALUES (900, 999, 1, 2020, 'JF1AA11B22C333444', 10000);
+-- 1. FOREIGN KEY: Appointment references a nonexistent vehicle
+INSERT INTO ServiceAppointment
+    (appointment_id, vehicle_id, appointment_datetime, status)
+VALUES (900, 999, '2026-11-15 10:00:00', 'Scheduled');
 
--- 2. UNIQUE: Vehicle 1 already uses this VIN. EXPECTED: FAIL.
-INSERT INTO Vehicle (vehicle_id, owner_id, model_id, year, vin, current_odometer)
-VALUES (901, 1, 1, 2020, 'JF1GD706X6L512345', 10000);
+-- 2. CHECK: Invalid appointment status
+INSERT INTO ServiceAppointment
+    (appointment_id, vehicle_id, appointment_datetime, status)
+VALUES (901, 1, '2026-11-15 10:00:00', 'Pending');
 
--- 3. CHECK: labour_cost cannot be negative. EXPECTED: FAIL.
-INSERT INTO ServiceJob (service_job_id, work_order_id, service_type_id, labour_cost)
-VALUES (902, 7, 1, -1.00);
+-- 3. CHECK: Inventory quantity cannot be negative
+UPDATE Inventory
+SET quantity_in_stock = -5
+WHERE part_id = 1;
 
--- 4. COMPOSITE PRIMARY KEY: (1, 1) already exists. EXPECTED: FAIL.
+-- 4. PRIMARY KEY: Part 1 already has an inventory record
+INSERT INTO Inventory
+    (part_id, quantity_in_stock, reorder_level)
+VALUES (1, 10, 5);
+
+-- 5. FOREIGN KEY: Part 999 does not exist
+INSERT INTO Inventory
+    (part_id, quantity_in_stock, reorder_level)
+VALUES (999, 10, 5);
+
+-- 6. UPDATE: Verify that changing inventory affects low-stock results (Part 1 should appear in result)
+UPDATE Inventory
+SET quantity_in_stock = 2
+WHERE part_id = 1;
+
+-- Check that Part 1 now appears in the low-stock results
+SELECT
+    Part.part_id,
+    Part.part_name,
+    Inventory.quantity_in_stock,
+    Inventory.reorder_level
+FROM Part
+JOIN Inventory
+    ON Part.part_id = Inventory.part_id
+WHERE Inventory.quantity_in_stock <= Inventory.reorder_level
+ORDER BY Part.part_id;
+
+-- Restore the original inventory quantity
+UPDATE Inventory
+SET quantity_in_stock = 12
+WHERE part_id = 1;
+
+-- 7. COST VALIDATION: Adding a technician should not change service job costs
+START TRANSACTION;
+
 INSERT INTO JobTechnician (service_job_id, technician_id)
-VALUES (1, 1);
+VALUES (2, 2);
 
--- 5. NOT NULL: Owner.first_name is required. EXPECTED: FAIL.
-INSERT INTO Owner (owner_id, first_name, last_name)
-VALUES (903, NULL, 'Test');
+-- Show the total cost of ServiceJob 2
+SELECT
+    labour_cost + (
+        SELECT SUM(quantity * unit_cost)
+        FROM JobPart
+        WHERE service_job_id = 2
+    ) AS total_cost
+FROM ServiceJob
+WHERE service_job_id = 2;
 
--- 6. CHECK: month_interval must be greater than zero.
--- First run this VALID setup statement to create an unused schedule ID.
-INSERT INTO MaintenanceSchedule (maintenance_schedule_id, model_id, schedule_name)
-VALUES (99, 1, 'Integrity Test Schedule');
-
--- Now execute this test separately. EXPECTED: FAIL due to CHECK (month_interval > 0).
--- (99, 1) has valid foreign keys and does not duplicate a composite primary key.
-INSERT INTO ScheduleService
-    (maintenance_schedule_id, service_type_id, kilometre_interval, month_interval)
-VALUES (99, 1, 10000, 0);
-
--- Run this cleanup statement after Test 6.
-DELETE FROM MaintenanceSchedule WHERE maintenance_schedule_id = 99;
+-- Restore the original technician assignments
+ROLLBACK;

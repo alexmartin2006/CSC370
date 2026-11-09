@@ -16,8 +16,9 @@ CREATE TABLE Owner (
 CREATE TABLE Part (
     part_id INT NOT NULL PRIMARY KEY,
     part_name VARCHAR(100) NOT NULL,
-    manufacturer VARCHAR(255),
-    part_number VARCHAR(100)
+    manufacturer VARCHAR(255) NOT NULL,
+    part_number VARCHAR(100) NOT NULL,
+    UNIQUE (manufacturer, part_number)
 );
 
 CREATE TABLE Technician (
@@ -28,14 +29,15 @@ CREATE TABLE Technician (
 
 CREATE TABLE Make (
     make_id INT NOT NULL PRIMARY KEY,
-    make_name VARCHAR(50) NOT NULL
+    make_name VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE Model (
     model_id INT NOT NULL PRIMARY KEY,
     make_id INT NOT NULL,
     model_name VARCHAR(50) NOT NULL,
-    FOREIGN KEY (make_id) REFERENCES Make(make_id)
+    FOREIGN KEY (make_id) REFERENCES Make(make_id),
+    UNIQUE (make_id, model_name)
 );
 
 CREATE TABLE Vehicle (

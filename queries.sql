@@ -1,75 +1,66 @@
 USE car_maintenance;
 
--- Return all work orders for a given vehicle
+-- Return the appointment history for a specific vehicle (Goal 1 - Sprint 2)
 SELECT
-    Owner.owner_id,
-    Owner.first_name,
-    Owner.last_name,
     Vehicle.vehicle_id,
-    Make.make_name,
-    Model.model_name,
-    Vehicle.vin,
-    Vehicle.licence_plate,
-    Vehicle.current_odometer,
-    WorkOrder.work_order_id,
-    WorkOrder.service_date,
-    WorkOrder.odometer,
-    WorkOrder.notes
+    ServiceAppointment.appointment_id,
+    ServiceAppointment.appointment_datetime,
+    ServiceAppointment.status,
+    ServiceAppointment.notes
 FROM Vehicle
-JOIN Owner
-    ON Vehicle.owner_id = Owner.owner_id
-JOIN Model
-    ON Vehicle.model_id = Model.model_id
-JOIN Make
-    ON Model.make_id = Make.make_id
-JOIN WorkOrder
-    ON Vehicle.vehicle_id = WorkOrder.vehicle_id
-WHERE Vehicle.vehicle_id = 1;
+JOIN ServiceAppointment
+    ON Vehicle.vehicle_id = ServiceAppointment.vehicle_id
+WHERE Vehicle.vehicle_id = 1
+ORDER BY ServiceAppointment.appointment_datetime;
 
--- Return all ServiceJobs (including the Technicians, JobParts and Parts) belonging to one WorkOrder
+-- Return upcoming scheduled appointments in date order (Goal 1 - Sprint 2)
 SELECT
-    WorkOrder.work_order_id,
-    WorkOrder.service_date,
-    WorkOrder.odometer,
-    ServiceJob.labour_cost,
-    JobPart.quantity,
-    JobPart.unit_cost,
+    ServiceAppointment.appointment_id,
+    ServiceAppointment.vehicle_id,
+    ServiceAppointment.appointment_datetime,
+    ServiceAppointment.status,
+    ServiceAppointment.notes
+FROM ServiceAppointment
+WHERE ServiceAppointment.status = 'Scheduled'
+    AND ServiceAppointment.appointment_datetime >= '2026-11-07'
+ORDER BY ServiceAppointment.appointment_datetime;
+
+-- Return all parts and their inventory information (Goal 2 - Sprint 2)
+SELECT
+    Part.part_id,
     Part.part_name,
     Part.manufacturer,
-    Part.part_number,
-    Technician.first_name,
-    Technician.last_name,
-    ServiceType.service_name,
-    ServiceType.description
-FROM WorkOrder
-JOIN ServiceJob
-    ON WorkOrder.work_order_id = ServiceJob.work_order_id
-JOIN JobPart
-    ON ServiceJob.service_job_id = JobPart.service_job_id
-JOIN Part
-    ON JobPart.part_id = Part.part_id
-JOIN JobTechnician
-    ON ServiceJob.service_job_id = JobTechnician.service_job_id
-JOIN ServiceType
-    ON ServiceJob.service_type_id = ServiceType.service_type_id
-JOIN Technician
-    ON JobTechnician.technician_id = Technician.technician_id
-WHERE WorkOrder.work_order_id = 7;
+    Inventory.quantity_in_stock,
+    Inventory.reorder_level
+FROM Part
+JOIN Inventory
+    ON Part.part_id = Inventory.part_id
+ORDER BY Part.part_id;
 
--- Return the Maintenance Schedule for a specific Model
+-- Return parts at or below their reorder level (Goal 2 - Sprint 2)
 SELECT
-    Model.model_name,
-    MaintenanceSchedule.schedule_name,
-    ScheduleService.kilometre_interval,
-    ScheduleService.month_interval,
-    ServiceType.service_name,
-    ServiceType.description
-FROM Model
-JOIN MaintenanceSchedule
-    ON Model.model_id = MaintenanceSchedule.model_id
-JOIN ScheduleService
-    ON MaintenanceSchedule.maintenance_schedule_id = ScheduleService.maintenance_schedule_id
-JOIN ServiceType
-    ON ScheduleService.service_type_id = ServiceType.service_type_id
-WHERE Model.model_id = 1;
+    Part.part_id,
+    Part.part_name,
+    Inventory.quantity_in_stock,
+    Inventory.reorder_level
+FROM Part
+JOIN Inventory
+    ON Part.part_id = Inventory.part_id
+WHERE Inventory.quantity_in_stock <= Inventory.reorder_level
+ORDER BY Part.part_id;
 
+-- Return the total number of units in inventory (Goal 2 - Sprint 2)
+SELECT
+    SUM(Inventory.quantity_in_stock) AS total_units
+FROM Inventory;
+
+-- Return the most frequently used parts (Goal 2 - Sprint 2)
+SELECT
+    Part.part_id,
+    Part.part_name,
+    SUM(JobPart.quantity) AS total_used
+FROM Part
+JOIN JobPart
+    ON Part.part_id = JobPart.part_id
+GROUP BY Part.part_id, Part.part_name
+ORDER BY total_used DESC;

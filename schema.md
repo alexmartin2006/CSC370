@@ -153,3 +153,26 @@ Associates service types with schedules and records the recommended kilometre an
 | | month_interval | INT | 6 | 12 |
 
 Both recommended services belong to MaintenanceSchedule 1, demonstrating that one maintenance schedule can contain multiple service recommendations.
+
+
+## ServiceAppointment
+
+Stores scheduled, completed, and cancelled service appointments for vehicles. Each appointment belongs to one vehicle.
+
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK | appointment_id | INT | 1 | 2 |
+| FK | vehicle_id | INT | 1 | 1 |
+| | appointment_datetime | DATETIME | 2026-11-10 09:00:00 | 2026-10-01 08:30:00 |
+| | status | VARCHAR(20) | Scheduled | Completed |
+| | notes | VARCHAR(500) | Winter tire change | Oil-change appointment |
+
+## Inventory
+
+Tracks the current stock and reorder level for each part. Each part can have at most one inventory record.
+
+| Key | Attribute | Type | Example 1 | Example 2 |
+|---|---|---|---|---|
+| PK, FK | part_id | INT | 1 | 2 |
+| | quantity_in_stock | INT | 12 | 3 |
+| | reorder_level | INT | 5 | 3 |
